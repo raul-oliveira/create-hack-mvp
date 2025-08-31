@@ -214,27 +214,29 @@ export default function UserPage({ params }: UserPageProps) {
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <h2 className="text-xl font-bold text-foreground truncate">
-                  {userData.name}
-                </h2>
-                <Badge
-                  variant={
-                    userData.status === "active"
-                      ? "default"
+              <Link href={`/user/${userData.id}/details`}>
+                <div className="flex items-center gap-2 mb-1">
+                  <h2 className="text-xl font-bold text-foreground truncate">
+                    {userData.name}
+                  </h2>
+                  <Badge
+                    variant={
+                      userData.status === "active"
+                        ? "default"
+                        : userData.status === "new"
+                        ? "outline"
+                        : "secondary"
+                    }
+                    className="text-xs"
+                  >
+                    {userData.status === "active"
+                      ? "Ativo"
                       : userData.status === "new"
-                      ? "outline"
-                      : "secondary"
-                  }
-                  className="text-xs"
-                >
-                  {userData.status === "active"
-                    ? "Ativo"
-                    : userData.status === "new"
-                    ? "Novo"
-                    : "Inativo"}
-                </Badge>
-              </div>
+                      ? "Novo"
+                      : "Inativo"}
+                  </Badge>
+                </div>
+              </Link>
               {/* <p className="text-sm text-muted-foreground">
                 {userData.description}
               </p> */}

@@ -1,0 +1,152 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Organization {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String   @db.VarChar(255)
+  inchurchApiKey    String?  @map("inchurch_api_key") @db.VarChar(255)
+  inchurchSecret    String?  @map("inchurch_secret") @db.VarChar(255)
+  settings          Json     @default("{}")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  leaders  Leader[]
+  people   Person[]
+  syncLogs SyncLog[]
+
+  @@map("organizations")
+}
+
+model Leader {
+  id                      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId          String   @map("organization_id") @db.Uuid
+  supabaseUserId          String   @map("supabase_user_id") @db.Uuid
+  email                   String   @unique @db.VarChar(255)
+  name                    String   @db.VarChar(255)
+  inchurchMemberId        String?  @map("inchurch_member_id") @db.VarChar(255)
+  toneConfig              Json     @default("{}") @map("tone_config")
+  notificationPreferences Json     @default("{}") @map("notification_preferences")
+  createdAt               DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt               DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  people       Person[]
+  initiatives  Initiative[]
+
+  @@unique([organizationId, supabaseUserId])
+  @@map("leaders")
+}
+
+model Person {
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId     String    @map("organization_id") @db.Uuid
+  leaderId           String    @map("leader_id") @db.Uuid
+  inchurchMemberId   String?   @map("inchurch_member_id") @db.VarChar(255)
+  name               String    @db.VarChar(255)
+  email              String?   @db.VarChar(255)
+  phone              String?   @db.VarChar(255)
+  birthDate          DateTime? @map("birth_date") @db.Date
+  maritalStatus      String?   @map("marital_status") @db.VarChar(50)
+  address            Json?
+  profileData        Json      @default("{}") @map("profile_data")
+  syncSource         String    @default("manual") @map("sync_source") @db.VarChar(50)
+  lastSyncedAt       DateTime? @map("last_synced_at") @db.Timestamptz(6)
+  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  organization Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  leader       Leader          @relation(fields: [leaderId], references: [id], onDelete: Cascade)
+  changes      PersonChange[]
+  initiatives  Initiative[]
+
+  @@unique([organizationId, inchurchMemberId])
+  @@map("people")
+}
+
+model PersonChange {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  personId    String    @map("person_id") @db.Uuid
+  changeType  String    @map("change_type") @db.VarChar(100)
+  oldValue    Json?     @map("old_value")
+  newValue    Json?     @map("new_value")
+  detectedAt  DateTime  @default(now()) @map("detected_at") @db.Timestamptz(6)
+  processedAt DateTime? @map("processed_at") @db.Timestamptz(6)
+  urgencyScore Int?     @map("urgency_score")
+  aiAnalysis  Json?     @map("ai_analysis")
+
+  // Relations
+  person      Person       @relation(fields: [personId], references: [id], onDelete: Cascade)
+  initiatives Initiative[]
+
+  @@map("people_changes")
+}
+
+model Initiative {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId   String    @map("organization_id") @db.Uuid
+  leaderId         String    @map("leader_id") @db.Uuid
+  personId         String    @map("person_id") @db.Uuid
+  changeId         String?   @map("change_id") @db.Uuid
+  type             String    @db.VarChar(50)
+  title            String    @db.VarChar(255)
+  description      String?
+  suggestedMessage String?   @map("suggested_message")
+  editedMessage    String?   @map("edited_message")
+  status           String    @default("pending") @db.VarChar(50)
+  priority         Int       @default(5)
+  dueDate          DateTime? @map("due_date") @db.Timestamptz(6)
+  completedAt      DateTime? @map("completed_at") @db.Timestamptz(6)
+  whatsappClickedAt DateTime? @map("whatsapp_clicked_at") @db.Timestamptz(6)
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Relations
+  leader   Leader          @relation(fields: [leaderId], references: [id], onDelete: Cascade)
+  person   Person          @relation(fields: [personId], references: [id], onDelete: Cascade)
+  change   PersonChange?   @relation(fields: [changeId], references: [id])
+  feedback InitiativeFeedback?
+
+  @@map("initiatives")
+}
+
+model InitiativeFeedback {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  initiativeId     String   @unique @map("initiative_id") @db.Uuid
+  outcome          String   @db.VarChar(100)
+  notes            String?
+  responseReceived Boolean  @default(false) @map("response_received")
+  followUpNeeded   Boolean  @default(false) @map("follow_up_needed")
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  // Relations
+  initiative Initiative @relation(fields: [initiativeId], references: [id], onDelete: Cascade)
+
+  @@map("initiative_feedback")
+}
+
+model SyncLog {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  organizationId   String    @map("organization_id") @db.Uuid
+  syncType         String    @map("sync_type") @db.VarChar(50)
+  status           String    @db.VarChar(50)
+  recordsProcessed Int       @default(0) @map("records_processed")
+  errorMessage     String?   @map("error_message")
+  executionTimeMs  Int?      @map("execution_time_ms")
+  startedAt        DateTime  @default(now()) @map("started_at") @db.Timestamptz(6)
+  completedAt      DateTime? @map("completed_at") @db.Timestamptz(6)
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@map("sync_logs")
+}

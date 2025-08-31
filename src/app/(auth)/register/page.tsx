@@ -31,7 +31,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -41,14 +41,44 @@ export default function RegisterPage() {
         }
       })
 
-      if (error) {
-        setError(error.message)
+      if (signUpError) {
+        setError(signUpError.message)
         return
       }
 
-      if (data.user && !data.user.email_confirmed_at) {
-        setSuccess('Verifique seu email para confirmar a conta!')
-      } else {
+      if (authData.user) {
+        if (!authData.user.email_confirmed_at) {
+          setSuccess('Verifique seu email para confirmar a conta!')
+          return
+        }
+
+        const { data: orgData, error: orgError } = await supabase
+          .from('organizations')
+          .insert({
+            name: 'Minha Igreja',
+          })
+          .select()
+          .single()
+
+        if (orgError) {
+          setError('Erro ao criar organização: ' + orgError.message)
+          return
+        }
+
+        const { error: leaderError } = await supabase
+          .from('leaders')
+          .insert({
+            organization_id: orgData.id,
+            supabase_user_id: authData.user.id,
+            email: authData.user.email!,
+            name,
+          })
+
+        if (leaderError) {
+          setError('Erro ao criar perfil de líder: ' + leaderError.message)
+          return
+        }
+
         router.push('/dashboard')
         router.refresh()
       }

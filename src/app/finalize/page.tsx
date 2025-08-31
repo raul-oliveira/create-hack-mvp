@@ -83,7 +83,7 @@ export default function FinalizePage() {
                 </Button>
               </Link>
               <h1 className="text-lg font-semibold text-foreground">
-                Finalizar a Iteração com o Discipulado
+                Finalizar a Interação com o Discipulado
               </h1>
             </div>
           </div>
@@ -108,7 +108,7 @@ export default function FinalizePage() {
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium text-foreground mb-2 block">
-                Resumo da Iteração
+                Resumo da Interação
               </label>
               <Textarea
                 placeholder="Descreva como foi a conversa, principais tópicos abordados, próximos passos, observações importantes..."

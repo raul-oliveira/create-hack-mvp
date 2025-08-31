@@ -35,7 +35,7 @@ const getUserData = (id: string) => {
       id: "1",
       name: "João Silva",
       email: "joao.silva@email.com",
-      phone: "(11) 99999-9999",
+      phone: "5511988328828",
       address: "São Paulo, SP",
       imageUrl:
         "https://images.unsplash.com/photo-1755511268115-a7a68109cc8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -242,7 +242,7 @@ export default function UserPage({ params }: UserPageProps) {
           </div>
         </div>
 
-        {/* Insights da Iteração Geral */}
+        {/* Insights da Interação Geral */}
         <div className="space-y-3">
           <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
             <p className="text-sm text-blue-800">
@@ -280,12 +280,12 @@ export default function UserPage({ params }: UserPageProps) {
           </div>
         </div>
 
-        {/* Section 2: Insights da Iteração */}
+        {/* Section 2: Insights da Interação */}
         <div className="bg-card rounded-lg border p-4">
           <div className="flex items-center gap-2 mb-4">
             <Lightbulb className="h-5 w-5 text-primary" />
             <h3 className="text-lg font-semibold text-foreground">
-              Insights da Iteração
+              Insights da Interação
             </h3>
           </div>
           <div className="space-y-3">
@@ -387,19 +387,23 @@ Fica com Deus! 🙏`}
             />
             <Button
               className="w-full"
-              onClick={async () => {
+              onClick={() => {
                 const textarea = document.querySelector(
                   "textarea"
                 ) as HTMLTextAreaElement;
                 if (textarea) {
-                  await navigator.clipboard.writeText(textarea.value);
+                  const message = encodeURIComponent(textarea.value);
+                  const phoneNumber = userData.phone.replace(/\D/g, ""); // Remove non-digits
+                  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+                  window.open(whatsappUrl, "_blank");
+
                   localStorage.setItem("lastProcessedUser", resolvedParams.id);
                   router.push(`/completion?from=${resolvedParams.id}`);
                 }
               }}
             >
-              <Copy className="mr-2 h-4 w-4" />
-              Copiar para WhatsApp
+              <MessageSquare className="mr-2 h-4 w-4" />
+              Enviar via WhatsApp
             </Button>
           </div>
         </div>

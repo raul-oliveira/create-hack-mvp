@@ -235,14 +235,14 @@ export default function UserPage({ params }: UserPageProps) {
                     : "Inativo"}
                 </Badge>
               </div>
-              <p className="text-sm text-muted-foreground">
+              {/* <p className="text-sm text-muted-foreground">
                 {userData.description}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
 
-        {/* Section 2: Insights da Iteração */}
+        {/* Insights da Iteração Geral */}
         <div className="space-y-3">
           <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
             <p className="text-sm text-blue-800">
@@ -313,14 +313,6 @@ export default function UserPage({ params }: UserPageProps) {
                   crescer espiritualmente.
                 </p>
               </div>
-            </div>
-            <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded">
-              <p className="text-sm text-blue-800">
-                <strong>Insight:</strong> João está em um momento de transição e
-                crescimento. É um bom momento para investir em seu
-                desenvolvimento como líder e oferecer suporte nas questões
-                pessoais.
-              </p>
             </div>
           </div>
         </div>
@@ -401,7 +393,8 @@ Fica com Deus! 🙏`}
                 ) as HTMLTextAreaElement;
                 if (textarea) {
                   await navigator.clipboard.writeText(textarea.value);
-                  router.push("/completion");
+                  localStorage.setItem("lastProcessedUser", resolvedParams.id);
+                  router.push(`/completion?from=${resolvedParams.id}`);
                 }
               }}
             >

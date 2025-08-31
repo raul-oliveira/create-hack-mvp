@@ -9,6 +9,7 @@ import {
   PieChart,
   ChartContainer,
   UserCard,
+  BottomNav,
 } from "@/components/ui";
 import {
   Users,
@@ -67,13 +68,13 @@ export default async function DashboardPage() {
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0 text-center flex flex-col gap-6">
           <div className="flex flex-col justify-center align-center gap-4">
-            <h2 className="text-3xl font-bold text-foreground">
+            <h2 className="text-3xl font-bold text-blue-600">
               Bem vindo,{" "}
               {user.user_metadata?.full_name.split(" ")[0] || user.email}
             </h2>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-blue-700 mb-6">
               Aqui você poderá gerenciar seus liderados e acompanhar as
-              iniciativas com seus discipulos.
+              iniciativas com seus discípulos.
             </p>
           </div>
 
@@ -102,6 +103,9 @@ export default async function DashboardPage() {
           </div>
         </div>
       </main>
+      
+      {/* Floating Bottom Navigation */}
+      <BottomNav />
     </div>
   );
 }

@@ -3,7 +3,13 @@
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button, Avatar, AvatarFallback, UserCard } from "@/components/ui";
+import {
+  Button,
+  Avatar,
+  AvatarFallback,
+  UserCard,
+  BottomNav,
+} from "@/components/ui";
 import { Check } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 
@@ -48,13 +54,14 @@ export default function CompletionPage() {
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0 text-center flex flex-col gap-6">
           <div className="flex flex-col justify-center align-center gap-4">
-            <h2 className="text-3xl font-bold text-foreground">
+            <h2 className="text-3xl font-bold text-blue-600">
               Bem vindo,{" "}
-              {currentUser.user_metadata?.full_name?.split(" ")[0] || currentUser.email}
+              {currentUser.user_metadata?.full_name?.split(" ")[0] ||
+                currentUser.email}
             </h2>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-blue-400 mb-6">
               Aqui você poderá gerenciar seus liderados e acompanhar as
-              iniciativas com seus discipulos.
+              iniciativas com seus discípulos.
             </p>
           </div>
 
@@ -65,6 +72,7 @@ export default function CompletionPage() {
               name="João Silva"
               description="Iteração pendente - 6 dias"
               status="active"
+              isFinalizing={true}
             />
             <UserCard
               id="2"
@@ -81,19 +89,10 @@ export default function CompletionPage() {
               status="active"
             />
           </div>
-
-          {/* Yellow Finalizar Button */}
-          <div className="flex justify-center mt-8">
-            <Button
-              className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-8 py-3 text-lg"
-              onClick={() => router.push("/dashboard")}
-            >
-              <Check className="mr-2 h-5 w-5" />
-              Finalizar
-            </Button>
-          </div>
         </div>
       </main>
+
+      <BottomNav />
     </div>
   );
 }

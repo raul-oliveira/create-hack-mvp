@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import {
   Button,
   Avatar,
@@ -13,7 +13,7 @@ import {
 import { Check } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 
-export default function CompletionPage() {
+function CompletionContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -102,5 +102,17 @@ export default function CompletionPage() {
 
       <BottomNav />
     </div>
+  );
+}
+
+export default function CompletionPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground">Carregando...</div>
+      </div>
+    }>
+      <CompletionContent />
+    </Suspense>
   );
 }

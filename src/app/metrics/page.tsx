@@ -32,7 +32,7 @@ export default function MetricsPage() {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        router.push("/auth/signin");
+        router.push("/login");
         return;
       }
 

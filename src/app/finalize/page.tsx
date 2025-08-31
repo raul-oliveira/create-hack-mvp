@@ -27,7 +27,7 @@ function FinalizeContent() {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        router.push("/auth/signin");
+        router.push("/login");
         return;
       }
 

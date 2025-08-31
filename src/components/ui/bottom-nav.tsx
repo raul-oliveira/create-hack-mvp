@@ -24,8 +24,8 @@ const BottomNav = React.forwardRef<HTMLDivElement, BottomNavProps>(
       },
       {
         icon: User,
-        label: "Perfil",
-        path: "/profile",
+        label: "Discípulos",
+        path: "/discipulos",
         isActive: pathname === "/discipulos",
       },
       {

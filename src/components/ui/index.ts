@@ -8,6 +8,7 @@ export { PieChart, ChartContainer, type ChartData } from "./chart"
 export { UserCard, type UserCardProps } from "./user-card"
 export { Textarea } from "./textarea"
 export { BottomNav } from "./bottom-nav"
+export { Progress } from "./progress"
 
 // Icons are already available via lucide-react
 export * from "lucide-react"

@@ -28,7 +28,7 @@ export async function PendingInitiatives({ leaderId, organizationId }: PendingIn
         name,
         phone,
         email,
-        status as person_status
+        status
       )
     `)
     .eq('leader_id', leaderId)

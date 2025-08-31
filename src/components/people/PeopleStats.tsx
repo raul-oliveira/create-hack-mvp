@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { PeopleRepository } from '@/lib/data/people-repository'
+import { PeopleRepositoryClient } from '@/lib/data/people-repository-client'
 
 interface PeopleStatsProps {
   organizationId: string
@@ -26,7 +26,7 @@ export function PeopleStats({ organizationId, leaderId }: PeopleStatsProps) {
   })
   const [loading, setLoading] = useState(true)
 
-  const repository = new PeopleRepository()
+  const repository = new PeopleRepositoryClient()
 
   useEffect(() => {
     const fetchStats = async () => {

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Person } from '@/lib/schemas/people'
-import { InitiativeRepository } from '@/lib/data/initiative-repository'
+import { InitiativeRepositoryClient } from '@/lib/data/initiative-repository-client'
 
 interface CreateInitiativeModalProps {
   person: Person
@@ -31,7 +31,7 @@ export function CreateInitiativeModal({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const repository = new InitiativeRepository()
+  const repository = new InitiativeRepositoryClient()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

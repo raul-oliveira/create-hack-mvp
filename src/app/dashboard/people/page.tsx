@@ -1,45 +1,26 @@
 import { Suspense } from 'react'
-import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { PeopleList } from '@/components/people/PeopleList'
 import { AddPersonButton } from '@/components/people/AddPersonButton'
 import { PeopleStats } from '@/components/people/PeopleStats'
+import { DashboardNav } from '@/components/navigation/DashboardNav'
+import { getUserProfile, createDefaultLeaderProfile } from '@/lib/auth/user-profile'
 
 export default async function PeoplePage() {
-  const supabase = await createClient()
-  
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const userProfile = await getUserProfile()
 
-  if (!user) {
+  if (!userProfile) {
     redirect('/login')
   }
 
-  // Get leader and organization info
-  const { data: leader, error } = await supabase
-    .from('leaders')
-    .select('id, organization_id, name, organizations(name)')
-    .eq('supabase_user_id', user.id)
-    .single()
-
-  if (error || !leader) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">
-            Perfil de líder não encontrado
-          </h2>
-          <p className="text-gray-600">
-            Entre em contato com o administrador da sua igreja.
-          </p>
-        </div>
-      </div>
-    )
-  }
+  const { user, leader, hasInChurchProfile } = userProfile
+  
+  // If user doesn't have InChurch profile, create a temporary one for UI purposes
+  const effectiveLeader = leader || createDefaultLeaderProfile(user.id)
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <DashboardNav userName={user.user_metadata?.full_name || user.email || 'Usuário'} />
       <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
@@ -53,10 +34,13 @@ export default async function PeoplePage() {
               </p>
             </div>
             <div className="mt-4 sm:mt-0">
-              <AddPersonButton 
-                organizationId={leader.organization_id}
-                leaderId={leader.id}
-              />
+              {hasInChurchProfile ? (
+                <AddPersonButton />
+              ) : (
+                <div className="text-sm text-gray-500 bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2">
+                  Para gerenciar liderados, conecte-se à InChurch
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -74,10 +58,35 @@ export default async function PeoplePage() {
             ))}
           </div>
         }>
-          <PeopleStats 
-            organizationId={leader.organization_id}
-            leaderId={leader.id}
-          />
+          {hasInChurchProfile ? (
+            <PeopleStats 
+              organizationId={effectiveLeader.organization_id}
+              leaderId={effectiveLeader.id}
+            />
+          ) : (
+            <div className="mb-8 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="text-sm font-medium text-gray-500">Total de Liderados</div>
+                <div className="mt-2 text-3xl font-bold text-gray-400">-</div>
+              </div>
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="text-sm font-medium text-gray-500">Ativos</div>
+                <div className="mt-2 text-3xl font-bold text-gray-400">-</div>
+              </div>
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="text-sm font-medium text-gray-500">Novos este mês</div>
+                <div className="mt-2 text-3xl font-bold text-gray-400">-</div>
+              </div>
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="text-sm font-medium text-gray-500">Pendências</div>
+                <div className="mt-2 text-3xl font-bold text-gray-400">-</div>
+              </div>
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="text-sm font-medium text-gray-500">Última atualização</div>
+                <div className="mt-2 text-sm text-gray-400">Nunca</div>
+              </div>
+            </div>
+          )}
         </Suspense>
 
         {/* People List */}
@@ -91,10 +100,29 @@ export default async function PeoplePage() {
               </div>
             </div>
           }>
-            <PeopleList 
-              organizationId={leader.organization_id}
-              leaderId={leader.id}
-            />
+            {hasInChurchProfile ? (
+              <PeopleList 
+                organizationId={effectiveLeader.organization_id}
+                leaderId={effectiveLeader.id}
+              />
+            ) : (
+              <div className="p-8 text-center">
+                <div className="text-gray-400 mb-4">
+                  <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  Conecte-se à InChurch
+                </h3>
+                <p className="text-gray-500 mb-4 max-w-md mx-auto">
+                  Para gerenciar seus liderados, você precisa conectar seu perfil à plataforma InChurch da sua igreja.
+                </p>
+                <p className="text-sm text-gray-400">
+                  Entre em contato com o administrador da sua igreja para configurar a integração.
+                </p>
+              </div>
+            )}
           </Suspense>
         </div>
       </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { PersonCard } from './PersonCard'
 import { SearchAndFilter } from './SearchAndFilter'
-import { PeopleRepository } from '@/lib/data/people-repository'
+import { PeopleRepositoryClient } from '@/lib/data/people-repository-client'
 import type { Person } from '@/lib/schemas/people'
 
 interface PeopleListProps {
@@ -24,7 +24,7 @@ export function PeopleList({ organizationId, leaderId }: PeopleListProps) {
   const [hasMore, setHasMore] = useState(false)
   const [total, setTotal] = useState(0)
 
-  const repository = new PeopleRepository()
+  const repository = new PeopleRepositoryClient()
 
   const fetchPeople = async (resetList = false) => {
     try {

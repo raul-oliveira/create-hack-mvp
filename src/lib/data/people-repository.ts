@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient as createServerClient } from '@/lib/supabase/server'
+import { createClient as createBrowserClient } from '@/lib/supabase/client'
 import { PersonSchema, PersonChangeSchema, DataSanitizer, ValidationError } from '@/lib/schemas/people'
 import type { Person, CreatePerson, UpdatePerson, PersonChange } from '@/lib/schemas/people'
 import { z } from 'zod'
@@ -20,21 +21,28 @@ export interface PersonFilter {
 }
 
 export class PeopleRepository {
-  private supabase: ReturnType<typeof createClient> | null = null
+  private supabase: ReturnType<typeof createBrowserClient> | null = null
+  private isServer: boolean = typeof window === 'undefined'
 
   constructor() {
-    this.initializeSupabase()
+    if (!this.isServer) {
+      this.supabase = createBrowserClient()
+    }
   }
 
-  private async initializeSupabase() {
-    this.supabase = createClient()
+  private async getSupabaseClient() {
+    if (!this.isServer) {
+      return this.supabase!
+    } else {
+      return await createServerClient()
+    }
   }
 
   async findMany(
     filter: PersonFilter,
     pagination: PaginationOptions = {}
   ): Promise<{ data: Person[]; total: number; hasMore: boolean }> {
-    if (!this.supabase) await this.initializeSupabase()
+    const supabase = await this.getSupabaseClient()
 
     const {
       page = 1,
@@ -43,7 +51,7 @@ export class PeopleRepository {
       orderDirection = 'asc'
     } = pagination
 
-    let query = this.supabase!
+    let query = supabase
       .from('people')
       .select('*', { count: 'exact' })
       .eq('organization_id', filter.organizationId)
@@ -94,9 +102,9 @@ export class PeopleRepository {
   }
 
   async findById(id: string, organizationId: string): Promise<Person | null> {
-    if (!this.supabase) await this.initializeSupabase()
+    const supabase = await this.getSupabaseClient()
 
-    const { data, error } = await this.supabase!
+    const { data, error } = await supabase
       .from('people')
       .select('*')
       .eq('id', id)
@@ -114,9 +122,9 @@ export class PeopleRepository {
     inchurchMemberId: string,
     organizationId: string
   ): Promise<Person | null> {
-    if (!this.supabase) await this.initializeSupabase()
+    const supabase = await this.getSupabaseClient()
 
-    const { data, error } = await this.supabase!
+    const { data, error } = await supabase
       .from('people')
       .select('*')
       .eq('inchurch_member_id', inchurchMemberId)
@@ -131,7 +139,7 @@ export class PeopleRepository {
   }
 
   async create(personData: CreatePerson, organizationId: string, leaderId: string): Promise<Person> {
-    if (!this.supabase) await this.initializeSupabase()
+    const supabase = await this.getSupabaseClient()
 
     // Sanitize and validate data
     const sanitizedData = this.sanitizePersonData(personData)
@@ -141,7 +149,7 @@ export class PeopleRepository {
       leader_id: leaderId
     })
 
-    const { data, error } = await this.supabase!
+    const { data, error } = await supabase
       .from('people')
       .insert({
         organization_id: validatedData.organization_id,
@@ -188,7 +196,7 @@ export class PeopleRepository {
 
     // Sanitize and validate updates
     const sanitizedUpdates = this.sanitizePersonData(updates)
-    const validatedUpdates = UpdatePersonSchema.parse(sanitizedUpdates)
+    const validatedUpdates = PersonSchema.partial().parse(sanitizedUpdates)
 
     const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
@@ -207,7 +215,8 @@ export class PeopleRepository {
       updateData.profile_data = validatedUpdates.profile_data ? JSON.stringify(validatedUpdates.profile_data) : null
     }
 
-    const { data, error } = await this.supabase!
+    const supabase = await this.getSupabaseClient()
+    const { data, error } = await supabase
       .from('people')
       .update(updateData)
       .eq('id', id)
@@ -226,7 +235,7 @@ export class PeopleRepository {
   }
 
   async delete(id: string, organizationId: string): Promise<void> {
-    if (!this.supabase) await this.initializeSupabase()
+    const supabase = await this.getSupabaseClient()
 
     // Get person data for logging
     const person = await this.findById(id, organizationId)
@@ -236,7 +245,7 @@ export class PeopleRepository {
 
     // Soft delete by updating a deleted_at timestamp (if column exists)
     // For now, we'll do hard delete but log it
-    const { error } = await this.supabase!
+    const { error } = await supabase
       .from('people')
       .delete()
       .eq('id', id)
@@ -261,9 +270,9 @@ export class PeopleRepository {
     organizationId: string,
     limit = 50
   ): Promise<PersonChange[]> {
-    if (!this.supabase) await this.initializeSupabase()
+    const supabase = await this.getSupabaseClient()
 
-    const { data, error } = await this.supabase!
+    const { data, error } = await supabase
       .from('people_changes')
       .select(`
         *,
@@ -277,7 +286,7 @@ export class PeopleRepository {
       throw new Error(`Failed to fetch recent changes: ${error.message}`)
     }
 
-    return data?.map(change => PersonChangeSchema.parse(change)) || []
+    return (data || []).map((change: any) => PersonChangeSchema.parse(change))
   }
 
   async getStatistics(organizationId: string): Promise<{
@@ -287,36 +296,36 @@ export class PeopleRepository {
     byMaritalStatus: Record<string, number>
     bySyncSource: Record<string, number>
   }> {
-    if (!this.supabase) await this.initializeSupabase()
+    const supabase = await this.getSupabaseClient()
 
     const [totalResult, recentResult, statusResult, sourceResult, changesResult] = await Promise.all([
       // Total people
-      this.supabase!
+      supabase
         .from('people')
         .select('id', { count: 'exact', head: true })
         .eq('organization_id', organizationId),
 
       // Recently added (last 7 days)
-      this.supabase!
+      supabase
         .from('people')
         .select('id', { count: 'exact', head: true })
         .eq('organization_id', organizationId)
         .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
 
       // By marital status
-      this.supabase!
+      supabase
         .from('people')
         .select('marital_status')
         .eq('organization_id', organizationId),
 
       // By sync source
-      this.supabase!
+      supabase
         .from('people')
         .select('sync_source')
         .eq('organization_id', organizationId),
 
       // Recent changes (last 24 hours)
-      this.supabase!
+      supabase
         .from('people_changes')
         .select(`
           id,
@@ -326,13 +335,13 @@ export class PeopleRepository {
         .gte('detected_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
     ])
 
-    const byMaritalStatus = (statusResult.data || []).reduce((acc, person) => {
+    const byMaritalStatus = (statusResult.data || []).reduce((acc: Record<string, number>, person: any) => {
       const status = person.marital_status || 'not_specified'
       acc[status] = (acc[status] || 0) + 1
       return acc
     }, {} as Record<string, number>)
 
-    const bySyncSource = (sourceResult.data || []).reduce((acc, person) => {
+    const bySyncSource = (sourceResult.data || []).reduce((acc: Record<string, number>, person: any) => {
       const source = person.sync_source || 'manual'
       acc[source] = (acc[source] || 0) + 1
       return acc
@@ -347,10 +356,10 @@ export class PeopleRepository {
     }
   }
 
-  private validatePerson(data: unknown): Person {
+  private validatePerson(data: any): Person {
     try {
       // Parse JSON fields if they're strings
-      const personData = { ...data } as Record<string, unknown>
+      const personData = { ...data } as Record<string, any>
       
       if (typeof personData.address === 'string') {
         personData.address = JSON.parse(personData.address)
@@ -385,7 +394,7 @@ export class PeopleRepository {
     }
 
     if (sanitized.address) {
-      sanitized.address = DataSanitizer.sanitizeAddress(sanitized.address)
+      sanitized.address = DataSanitizer.sanitizeAddress(sanitized.address as any)
     }
 
     return sanitized
@@ -409,7 +418,7 @@ export class PeopleRepository {
     // Log each change
     for (const change of changes) {
       await this.createChangeRecord({
-        person_id: newPerson.id!,
+        person_id: newPerson.id,
         change_type: `person.updated.${change.field}`,
         old_value: change.oldValue,
         new_value: change.newValue,
@@ -433,9 +442,9 @@ export class PeopleRepository {
   }
 
   private async createChangeRecord(change: PersonChange): Promise<void> {
-    if (!this.supabase) await this.initializeSupabase()
+    const supabase = await this.getSupabaseClient()
 
-    const { error } = await this.supabase!
+    const { error } = await supabase
       .from('people_changes')
       .insert({
         person_id: change.person_id,

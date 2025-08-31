@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Person } from '@/lib/schemas/people'
 import { InitiativeWithPerson } from '@/lib/schemas/initiatives'
-import { InitiativeRepository } from '@/lib/data/initiative-repository'
+import { InitiativeRepositoryClient } from '@/lib/data/initiative-repository-client'
 import { ProfileHeader } from './ProfileHeader'
 import { ProfileTabs } from './ProfileTabs'
 import { ProfileOverview } from './ProfileOverview'
@@ -23,7 +23,7 @@ export function LideradoProfile({ person, leaderId, organizationId }: LideradoPr
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const repository = new InitiativeRepository()
+  const repository = new InitiativeRepositoryClient()
 
   useEffect(() => {
     const fetchPersonData = async () => {

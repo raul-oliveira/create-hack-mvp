@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { InitiativeRepository } from '@/lib/data/initiative-repository'
+import { InitiativeRepositoryClient } from '@/lib/data/initiative-repository-client'
 import { InitiativeStats } from '@/lib/schemas/initiatives'
 
 interface InitiativesStatsProps {
@@ -13,7 +13,7 @@ export function InitiativesStats({ leaderId }: InitiativesStatsProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const repository = new InitiativeRepository()
+  const repository = new InitiativeRepositoryClient()
 
   useEffect(() => {
     const fetchStats = async () => {

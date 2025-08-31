@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { InitiativeCard } from './InitiativeCard'
 import { InitiativeFilters } from './InitiativeFilters'
 import { InitiativeDetailModal } from './InitiativeDetailModal'
-import { InitiativeRepository } from '@/lib/data/initiative-repository'
+import { InitiativeRepositoryClient } from '@/lib/data/initiative-repository-client'
 import { InitiativeWithPerson, InitiativeFilters as IFilters, InitiativeStatus } from '@/lib/schemas/initiatives'
 
 interface InitiativesDashboardProps {
@@ -31,7 +31,7 @@ export function InitiativesDashboard({ leaderId, organizationId }: InitiativesDa
   const [hasMore, setHasMore] = useState(false)
   const [total, setTotal] = useState(0)
 
-  const repository = new InitiativeRepository()
+  const repository = new InitiativeRepositoryClient()
 
   const fetchInitiatives = async (resetList = false) => {
     try {

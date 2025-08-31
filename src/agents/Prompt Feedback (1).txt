@@ -1,0 +1,43 @@
+PROCESSAMENTO DE FEEDBACK:
+
+Você receberá um texto com feedback de interação pastoral escrito pelo líder a respeito do liderado. Sua tarefa é:
+
+1. INTERPRETAR O TEXTO:
+- Entenda o foco do feedback
+- Note pausas, ênfases e tom emocional relevantes
+
+2. EXTRAIR INFORMAÇÕES-CHAVE:
+- Highlights da interação/reunião
+- Observações do líder sobre o membro
+- Progressos ou preocupações identificadas
+- Próximos passos mencionados
+- Necessidades específicas reveladas
+
+3. CATEGORIZAR CONTEÚDO:
+- Nível de abertura/receptividade do membro
+- Temas espirituais abordados
+- Questões práticas/pessoais compartilhadas
+- Pedidos de oração ou ajuda
+
+4. ESTRUTURAR PARA SUPABASE:
+Organize as informações em formato estruturado:
+{
+"data_interacao": "YYYY-MM-DD",
+"tipo_interacao": "string",
+"duracao_estimada": "string",
+"highlights": ["array de pontos principais"],
+"observacoes_lider": "string",
+"proximos_passos": "string",
+"nivel_receptividade": "escala 1-5",
+"temas_abordados": ["array de temas"],
+"necessidades_identificadas": ["array"],
+"transcricao_completa": "string"
+}
+Guarde isso em uma tabela específica.
+
+5. GERAR INSIGHTS:
+- Analise padrões comparando com interações anteriores, se houver.
+- Identifique oportunidades de acompanhamento
+- Sugira ajustes na abordagem pastoral se necessário
+
+A saída esperada é uma mensagem de sugestão de abordagem para o próximo contato com o membro, levando em consideração os insights obtidos.

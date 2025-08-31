@@ -1,7 +1,7 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   Button,
@@ -15,8 +15,11 @@ import type { User } from "@supabase/supabase-js";
 
 export default function CompletionPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  const fromUserId = searchParams.get("from");
 
   useEffect(() => {
     const getUser = async () => {
@@ -72,7 +75,8 @@ export default function CompletionPage() {
               name="João Silva"
               description="Interação pendente - 6 dias"
               status="active"
-              isFinalizing={true}
+              isFinalizing={fromUserId === "1"}
+              hasPendingInteraction={true}
             />
             <UserCard
               id="2"
@@ -80,6 +84,8 @@ export default function CompletionPage() {
               name="Maria Santos"
               description="Interação pendente - 4 dias"
               status="new"
+              isFinalizing={fromUserId === "2"}
+              hasPendingInteraction={true}
             />
             <UserCard
               id="3"
@@ -87,6 +93,8 @@ export default function CompletionPage() {
               name="Pedro Costa"
               description="Interação pendente - 2 dias"
               status="active"
+              isFinalizing={fromUserId === "3"}
+              hasPendingInteraction={true}
             />
           </div>
         </div>

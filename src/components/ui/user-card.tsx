@@ -8,19 +8,23 @@ import { Badge } from "./badge";
 import { Button } from "./button";
 import { Check } from "lucide-react";
 
+type Rating = "pessimo" | "ruim" | "regular" | "bom" | "otimo";
+
 interface UserCardProps {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   imageUrl?: string;
   status?: "active" | "inactive" | "new";
   className?: string;
   isFinalizing?: boolean;
+  rating?: Rating;
+  hasPendingInteraction?: boolean;
 }
 
 const UserCard = React.forwardRef<HTMLDivElement, UserCardProps>(
   (
-    { id, name, description, imageUrl, status, className, isFinalizing },
+    { id, name, description, imageUrl, status, className, isFinalizing, rating, hasPendingInteraction },
     ref
   ) => {
     const router = useRouter();
@@ -95,7 +99,13 @@ const UserCard = React.forwardRef<HTMLDivElement, UserCardProps>(
                 <div className="flex justify-center items-center">
                   <Button
                     className="bg-blue-500 hover:bg-blue-400 text-white font-semibold px-2 py-2 text-sm"
-                    onClick={() => router.push(`/finalize?userId=${id}&userName=${encodeURIComponent(name)}`)}
+                    onClick={() =>
+                      router.push(
+                        `/finalize?userId=${id}&userName=${encodeURIComponent(
+                          name
+                        )}`
+                      )
+                    }
                   >
                     <Check className="mr-1 h-4 w-4" />
                     Finalizar

@@ -54,6 +54,13 @@ export default function FinalizePage() {
       date: new Date().toISOString(),
     });
 
+    // Mark user as finalized in localStorage
+    const finalizedUsers = JSON.parse(localStorage.getItem("finalizedUsers") || "[]");
+    if (!finalizedUsers.includes(userId)) {
+      finalizedUsers.push(userId);
+      localStorage.setItem("finalizedUsers", JSON.stringify(finalizedUsers));
+    }
+
     setSending(false);
     router.push("/dashboard");
   };

@@ -1,5 +1,8 @@
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+"use client";
+
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import LogoutButton from "@/components/LogoutButton";
 import {
   Button,
@@ -18,17 +21,37 @@ import {
   Calendar as CalendarIcon,
   BarChart3,
 } from "lucide-react";
+import type { User } from "@supabase/supabase-js";
 
-export default async function DashboardPage() {
-  const supabase = await createClient();
+export default function DashboardPage() {
+  const router = useRouter();
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [finalizedUsers, setFinalizedUsers] = useState<string[]>([]);
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  useEffect(() => {
+    const getUser = async () => {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect("/login");
-  }
+      if (!user) {
+        router.push("/auth/signin");
+        return;
+      }
+
+      setCurrentUser(user);
+      
+      // Load finalized users from localStorage
+      const finalized = JSON.parse(localStorage.getItem("finalizedUsers") || "[]");
+      setFinalizedUsers(finalized);
+      
+      setLoading(false);
+    };
+
+    getUser();
+  }, [router]);
 
   // Dados de exemplo para o gráfico
   const chartData = [
@@ -37,6 +60,46 @@ export default async function DashboardPage() {
     { name: "Inativos", value: 20, color: "hsl(var(--chart-3))" },
     { name: "Visitantes", value: 10, color: "hsl(var(--chart-4))" },
   ];
+
+  // Define all users with their data
+  const allUsers = [
+    {
+      id: "1",
+      name: "João Silva",
+      description: "Interação pendente - 6 dias",
+      status: "active" as const,
+      imageUrl: "https://images.unsplash.com/photo-1755511268115-a7a68109cc8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      id: "2", 
+      name: "Maria Santos",
+      description: "Interação pendente - 4 dias",
+      status: "new" as const,
+      imageUrl: "https://images.unsplash.com/photo-1755511268115-a7a68109cc8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      id: "3",
+      name: "Pedro Costa", 
+      description: "Interação pendente - 2 dias",
+      status: "active" as const,
+      imageUrl: "https://images.unsplash.com/photo-1756408263381-ed1488d9b1ea?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    }
+  ];
+
+  // Filter out finalized users
+  const pendingUsers = allUsers.filter(user => !finalizedUsers.includes(user.id));
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-muted-foreground">Carregando...</div>
+      </div>
+    );
+  }
+
+  if (!currentUser) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -70,7 +133,8 @@ export default async function DashboardPage() {
           <div className="flex flex-col justify-center align-center gap-4">
             <h2 className="text-3xl font-bold text-blue-600">
               Bem vindo,{" "}
-              {user.user_metadata?.full_name.split(" ")[0] || user.email}
+              {currentUser?.user_metadata?.full_name?.split(" ")[0] ||
+                currentUser?.email}
             </h2>
             <p className="text-blue-700 mb-6">
               Aqui você poderá gerenciar seus liderados e acompanhar as
@@ -79,27 +143,31 @@ export default async function DashboardPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <UserCard
-              id="1"
-              imageUrl="https://images.unsplash.com/photo-1755511268115-a7a68109cc8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              name="João Silva"
-              description="Interação pendente - 6 dias"
-              status="active"
-            />
-            <UserCard
-              id="2"
-              imageUrl="https://images.unsplash.com/photo-1755511268115-a7a68109cc8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              name="Maria Santos"
-              description="Interação pendente - 4 dias"
-              status="new"
-            />
-            <UserCard
-              id="3"
-              imageUrl="https://images.unsplash.com/photo-1756408263381-ed1488d9b1ea?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              name="Pedro Costa"
-              description="Interação pendente - 2 dias"
-              status="active"
-            />
+            {pendingUsers.length === 0 ? (
+              <div className="col-span-full text-center py-12">
+                <div className="text-gray-400 mb-2">
+                  <Users className="h-12 w-12 mx-auto mb-4" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  Todas as interações foram finalizadas!
+                </h3>
+                <p className="text-gray-500">
+                  Parabéns! Você completou todas as interações pendentes.
+                </p>
+              </div>
+            ) : (
+              pendingUsers.map((user) => (
+                <UserCard
+                  key={user.id}
+                  id={user.id}
+                  imageUrl={user.imageUrl}
+                  name={user.name}
+                  description={user.description}
+                  status={user.status}
+                  hasPendingInteraction={true}
+                />
+              ))
+            )}
           </div>
         </div>
       </main>

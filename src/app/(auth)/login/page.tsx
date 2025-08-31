@@ -123,7 +123,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <button
               type="button"
               onClick={handleGoogleLogin}
@@ -132,7 +132,7 @@ export default function LoginPage() {
             >
               Entrar com Google
             </button>
-          </div>
+          </div> */}
 
           <div className="text-center">
             <Link 

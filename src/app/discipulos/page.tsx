@@ -54,8 +54,8 @@ export default function DiscipulosPage() {
       rating: "otimo" as const,
     },
     {
-      id: "2",
-      name: "Maria Santos",
+      id: "3",
+      name: "Pedro Costa",
       description: "Nova liderança, iniciou este mês",
       imageUrl:
         "https://images.unsplash.com/photo-1746310712275-c80c0f2dab27?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -65,9 +65,9 @@ export default function DiscipulosPage() {
       rating: "bom" as const,
     },
     {
-      id: "3",
-      name: "Pedro Costa",
-      description: "Líder experiente, mentor de novos líderes",
+      id: "2",
+      name: "Maria Santos",
+      description: "Líder experiente, mentora de novos líderes",
       imageUrl:
         "https://images.unsplash.com/photo-1756408263381-ed1488d9b1ea?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       status: "active" as const,

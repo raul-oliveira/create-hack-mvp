@@ -55,7 +55,9 @@ export default function FinalizePage() {
     });
 
     // Mark user as finalized in localStorage
-    const finalizedUsers = JSON.parse(localStorage.getItem("finalizedUsers") || "[]");
+    const finalizedUsers = JSON.parse(
+      localStorage.getItem("finalizedUsers") || "[]"
+    );
     if (!finalizedUsers.includes(userId)) {
       finalizedUsers.push(userId);
       localStorage.setItem("finalizedUsers", JSON.stringify(finalizedUsers));
@@ -100,18 +102,6 @@ export default function FinalizePage() {
       {/* Main Content */}
       <main className="px-4 py-6 max-w-2xl mx-auto">
         <div className="bg-card rounded-lg border p-6 space-y-6">
-          <div className="flex flex-col justify-center align-center gap-4">
-            <h2 className="text-3xl font-bold text-blue-600">
-              Bem vindo,{" "}
-              {currentUser.user_metadata?.full_name?.split(" ")[0] ||
-                currentUser.email}
-            </h2>
-            <p className="text-blue-400 mb-6">
-              Aqui você poderá gerenciar seus liderados e acompanhar as
-              iniciativas com seus discípulos.
-            </p>
-          </div>
-
           <div className="space-y-4">
             <div>
               <label className="text-sm font-medium text-foreground mb-2 block">

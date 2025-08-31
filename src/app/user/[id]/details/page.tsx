@@ -47,7 +47,8 @@ const getUserData = (id: string) => {
         },
         {
           date: "2024-05-15",
-          description: "Participou do retiro espiritual e teve um momento de quebrantamento",
+          description:
+            "Participou do retiro espiritual e teve um momento de quebrantamento",
         },
         {
           date: "2024-06-10",
@@ -67,7 +68,7 @@ const getUserData = (id: string) => {
       gender: "Feminino",
       relationship: "Casada",
       imageUrl:
-        "https://images.unsplash.com/photo-1746310712275-c80c0f2dab27?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1756408263381-ed1488d9b1ea?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       tags: ["Timidez", "Perfeccionismo"],
       timeline: [
         {
@@ -92,7 +93,7 @@ const getUserData = (id: string) => {
       gender: "Masculino",
       relationship: "Casado",
       imageUrl:
-        "https://images.unsplash.com/photo-1756408263381-ed1488d9b1ea?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://images.unsplash.com/photo-1746310712275-c80c0f2dab27?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       tags: ["Liderança", "Mentoria"],
       timeline: [
         {
@@ -173,9 +174,8 @@ export default function UserDetailsPage({ params }: UserDetailsPageProps) {
   const [loading, setLoading] = useState(true);
   const resolvedParams = use(params);
   const userData = getUserData(resolvedParams.id);
-  const [relationshipStatus, setRelationshipStatus] = useState<RelationshipStatus>(
-    userData?.relationshipStatus || "regular"
-  );
+  const [relationshipStatus, setRelationshipStatus] =
+    useState<RelationshipStatus>(userData?.relationshipStatus || "regular");
 
   useEffect(() => {
     const getUser = async () => {
@@ -213,23 +213,35 @@ export default function UserDetailsPage({ params }: UserDetailsPageProps) {
     return null;
   }
 
-  const statusLevels: RelationshipStatus[] = ["pessimo", "ruim", "regular", "bom", "otimo"];
+  const statusLevels: RelationshipStatus[] = [
+    "pessimo",
+    "ruim",
+    "regular",
+    "bom",
+    "otimo",
+  ];
   const statusLabels = {
     pessimo: "Péssimo",
-    ruim: "Ruim", 
+    ruim: "Ruim",
     regular: "Regular",
     bom: "Bom",
-    otimo: "Ótimo"
+    otimo: "Ótimo",
   };
 
   const getStatusColor = (status: RelationshipStatus) => {
     switch (status) {
-      case "pessimo": return "bg-red-500";
-      case "ruim": return "bg-orange-500";
-      case "regular": return "bg-yellow-500";
-      case "bom": return "bg-blue-500";
-      case "otimo": return "bg-green-500";
-      default: return "bg-gray-500";
+      case "pessimo":
+        return "bg-red-500";
+      case "ruim":
+        return "bg-orange-500";
+      case "regular":
+        return "bg-yellow-500";
+      case "bom":
+        return "bg-blue-500";
+      case "otimo":
+        return "bg-green-500";
+      default:
+        return "bg-gray-500";
     }
   };
 
@@ -238,7 +250,10 @@ export default function UserDetailsPage({ params }: UserDetailsPageProps) {
     return ((index + 1) / statusLevels.length) * 100;
   };
 
-  const getStatusFromClick = (clickX: number, totalWidth: number): RelationshipStatus => {
+  const getStatusFromClick = (
+    clickX: number,
+    totalWidth: number
+  ): RelationshipStatus => {
     const percentage = (clickX / totalWidth) * 100;
     const stepSize = 100 / statusLevels.length;
     const stepIndex = Math.floor(percentage / stepSize);
@@ -300,16 +315,24 @@ export default function UserDetailsPage({ params }: UserDetailsPageProps) {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="text-center sm:text-left">
               <div className="text-sm text-muted-foreground mb-1">Idade</div>
-              <div className="text-2xl font-bold text-foreground">{userData.age}</div>
+              <div className="text-2xl font-bold text-foreground">
+                {userData.age}
+              </div>
               <div className="text-sm text-muted-foreground">anos</div>
             </div>
             <div className="text-center sm:text-left">
               <div className="text-sm text-muted-foreground mb-1">Sexo</div>
-              <div className="text-lg font-semibold text-foreground">{userData.gender}</div>
+              <div className="text-lg font-semibold text-foreground">
+                {userData.gender}
+              </div>
             </div>
             <div className="text-center sm:text-left">
-              <div className="text-sm text-muted-foreground mb-1">Relacionamento</div>
-              <div className="text-lg font-semibold text-foreground">{userData.relationship}</div>
+              <div className="text-sm text-muted-foreground mb-1">
+                Relacionamento
+              </div>
+              <div className="text-lg font-semibold text-foreground">
+                {userData.relationship}
+              </div>
             </div>
           </div>
         </div>
@@ -359,7 +382,9 @@ export default function UserDetailsPage({ params }: UserDetailsPageProps) {
                       })}
                     </span>
                   </div>
-                  <p className="text-foreground leading-relaxed">{event.description}</p>
+                  <p className="text-foreground leading-relaxed">
+                    {event.description}
+                  </p>
                 </div>
               </div>
             ))}
@@ -376,16 +401,18 @@ export default function UserDetailsPage({ params }: UserDetailsPageProps) {
           </div>
           <div className="space-y-4">
             {statusLevels.map((status) => (
-              <div 
-                key={status} 
+              <div
+                key={status}
                 className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
                 onClick={() => setRelationshipStatus(status)}
               >
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                  relationshipStatus === status
-                    ? `${getStatusColor(status)} border-transparent`
-                    : "border-gray-300 bg-white"
-                }`}>
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                    relationshipStatus === status
+                      ? `${getStatusColor(status)} border-transparent`
+                      : "border-gray-300 bg-white"
+                  }`}
+                >
                   {relationshipStatus === status && (
                     <div className="w-2 h-2 bg-white rounded-full"></div>
                   )}

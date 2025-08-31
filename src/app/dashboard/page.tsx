@@ -42,11 +42,13 @@ export default function DashboardPage() {
       }
 
       setCurrentUser(user);
-      
+
       // Load finalized users from localStorage
-      const finalized = JSON.parse(localStorage.getItem("finalizedUsers") || "[]");
+      const finalized = JSON.parse(
+        localStorage.getItem("finalizedUsers") || "[]"
+      );
       setFinalizedUsers(finalized);
-      
+
       setLoading(false);
     };
 
@@ -68,26 +70,31 @@ export default function DashboardPage() {
       name: "João Silva",
       description: "Interação pendente - 6 dias",
       status: "active" as const,
-      imageUrl: "https://images.unsplash.com/photo-1755511268115-a7a68109cc8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      imageUrl:
+        "https://images.unsplash.com/photo-1755511268115-a7a68109cc8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
-      id: "2", 
+      id: "2",
       name: "Maria Santos",
       description: "Interação pendente - 4 dias",
       status: "new" as const,
-      imageUrl: "https://images.unsplash.com/photo-1755511268115-a7a68109cc8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      imageUrl:
+        "https://images.unsplash.com/photo-1756408263381-ed1488d9b1ea?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       id: "3",
-      name: "Pedro Costa", 
+      name: "Pedro Costa",
       description: "Interação pendente - 2 dias",
       status: "active" as const,
-      imageUrl: "https://images.unsplash.com/photo-1756408263381-ed1488d9b1ea?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    }
+      imageUrl:
+        "https://images.unsplash.com/photo-1746310712275-c80c0f2dab27?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
   ];
 
   // Filter out finalized users
-  const pendingUsers = allUsers.filter(user => !finalizedUsers.includes(user.id));
+  const pendingUsers = allUsers.filter(
+    (user) => !finalizedUsers.includes(user.id)
+  );
 
   if (loading) {
     return (

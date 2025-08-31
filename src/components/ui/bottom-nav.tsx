@@ -30,15 +30,9 @@ const BottomNav = React.forwardRef<HTMLDivElement, BottomNavProps>(
       },
       {
         icon: CheckSquare,
-        label: "Tarefas",
-        path: "/tasks",
-        isActive: pathname === "/tasks",
-      },
-      {
-        icon: Book,
-        label: "Recursos",
-        path: "/resources",
-        isActive: pathname === "/resources",
+        label: "Métricas",
+        path: "/metrics",
+        isActive: pathname === "/metrics",
       },
     ];
 

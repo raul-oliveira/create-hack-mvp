@@ -164,7 +164,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <button
               type="button"
               onClick={handleGoogleRegister}
@@ -173,7 +173,7 @@ export default function RegisterPage() {
             >
               Registrar com Google
             </button>
-          </div>
+          </div> */}
 
           <div className="text-center">
             <Link 

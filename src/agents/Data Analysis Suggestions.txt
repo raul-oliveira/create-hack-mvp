@@ -1,0 +1,41 @@
+ANÁLISE DE DADOS DE MEMBROS:
+
+Com base nos dados do Supabase contendo informações de [INSERIR DADOS ESPECÍFICOS], analise para esse liderado:
+
+DADOS DISPONÍVEIS:
+- Informações pessoais (nome, data de nascimento, contatos)
+- Histórico de presença (células, cultos, eventos)
+- Participação em ministérios e atividades
+- Últimas interações registradas
+- Feedback de interações anteriores
+- Contexto cultural/doutrinário da igreja, caso exista: [INSERIR CONFISSÃO DE FÉ]
+
+PROCESSO DE ANÁLISE:
+1. Identifique padrões de engajamento e possíveis necessidades
+2. Defina se ele precisa de atenção com base em informações críticas como:
+   - Ausências prolongadas
+   - Diminuição na participação
+   - Datas especiais (aniversários, marcos)
+   - Situações pessoais conhecidas
+   - Tempo desde última interação pastoral
+   - Baixo nível de saúde de relacionamento com o líder
+
+3. Se esse membro precisa de atenção, sugira para o líder:
+   - Tipo de interação mais apropriada
+   - Timing ideal para o contato
+   - Abordagem específica considerando histórico pessoal
+
+TIPOS DE SUGESTÕES DISPONÍVEIS:
+- Sessão de discipulado
+- Convite para evento específico
+- Verificação de bem-estar
+- Envio de oração personalizada
+- Mensagem de aniversário
+- Acompanhamento pós-ausência
+- Celebração de marcos espirituais
+
+Para cada sugestão, considere:
+- Perfil comportamental do líder [INSERIR FRASE RESUMO]
+- Personalidade/preferências do membro
+- Contexto atual da igreja
+- Princípios doutrinários aplicáveis

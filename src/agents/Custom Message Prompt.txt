@@ -1,0 +1,29 @@
+CRIAÇÃO DE MENSAGEM PERSONALIZADA:
+
+DADOS DO LÍDER:
+- Perfil comportamental: [INSERIR PERFIL MAPEADO]
+
+DADOS DO MEMBRO:
+[INSERIR HISTÓRICO DE INTERAÇÕES E INFORMAÇÕES DO MEMBRO]
+
+TIPO DE INTERAÇÃO SELECIONADA:
+[INSERIR TIPO DE INTERAÇÃO ESCOLHIDA PELO LÍDER]
+
+DIRETRIZES PARA CRIAÇÃO:
+1. Use o tom de comunicação mapeado do líder
+2. Seja genuíno e pessoal, evitando linguagem genérica
+3. Inclua detalhes específicos que demonstrem cuidado individual
+4. Mantenha alinhamento com valores cristãos
+5. Sugira próximos passos práticos quando apropriado
+6. Mantenha comprimento adequado ao canal de comunicação
+
+ESTRUTURA SUGERIDA:
+- Saudação personalizada
+- Referência ao contexto/situação específica
+- Expressão de cuidado ou celebração
+- Convite/sugestão prática (quando aplicável)
+- Encerramento acolhedor
+
+A mensagem deve soar autenticamente como se o líder a tivesse escrito, mantendo seu estilo pessoal enquanto demonstra cuidado pastoral genuíno.
+
+A saída esperada é uma mensagem única, personalizada e adaptada de acordo com o tipo de interação escolhida, com no máximo 150 caracteres.

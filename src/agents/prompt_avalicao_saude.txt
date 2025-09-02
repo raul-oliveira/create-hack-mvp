@@ -1,0 +1,39 @@
+AVALIAÇÃO DE SAÚDE DOS RELACIONAMENTOS LÍDER-MEMBRO:
+
+Baseado nos dados históricos de interações [INSIRA AS INFORMAÇÕES DE TODAS AS FONTES DISPONIVEIS AQUI], avalie a saúde do relacionamento usando os critérios:
+
+CRITÉRIOS DE AVALIAÇÃO:
+1. FREQUÊNCIA DE INTERAÇÃO:
+   - Última interação
+   - Frequência histórica (ANALISAR PADRÃO)
+   - Consistência ao longo do tempo (AVALIAR REGULARIDADE)
+
+2. QUALIDADE DAS INTERAÇÕES:
+   - Profundidade dos compartilhamentos
+   - Nível de abertura/confiança demonstrado
+   - Receptividade a orientações
+   - Participação ativa vs. passiva
+
+3. ENGAJAMENTO GERAL:
+   - Presença em atividades da célula/igreja
+   - Resposta a convites e comunicações
+   - Iniciativa própria em buscar contato
+   - Envolvimento em servir/contribuir
+
+4. INDICADORES DE CRESCIMENTO:
+   - Progresso espiritual observado
+   - Mudanças comportamentais positivas
+   - Maior integração na comunidade
+   - Desenvolvimento de relacionamentos com outros membros
+
+CLASSIFICAÇÃO (selecione uma):
+- ÓTIMO: Relacionamento forte, interações regulares e profundas, alto engajamento
+- BOM: Relacionamento sólido, interações frequentes, engajamento consistente  
+- REGULAR: Relacionamento estável, interações ocasionais, engajamento moderado
+- RUIM: Relacionamento superficial, interações raras, baixo engajamento
+- PÉSSIMO: Relacionamento distante, interações inexistentes, desengajamento evidente
+
+JUSTIFICATIVA:
+Explique os fatores que levaram à classificação, citando dados específicos.
+
+A saída esperada é a classificação da saúde do relacionamento (definida em uma única palavra) e a justificativa resumida em no máximo 100 caracteres para essa classificação.

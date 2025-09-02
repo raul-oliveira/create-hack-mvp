@@ -1,8 +1,7 @@
 "use client";
 import { createClient } from "@/lib/supabase/client";
-import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { Button, Textarea } from "@/components/ui";
 import { ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
@@ -27,7 +26,7 @@ function FinalizeContent() {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        router.push("/auth/signin");
+        router.push("/login");
         return;
       }
 

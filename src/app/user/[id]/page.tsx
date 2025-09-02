@@ -134,7 +134,7 @@ export default function UserPage({ params }: UserPageProps) {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        router.push("/auth/signin");
+        router.push("/login");
         return;
       }
 

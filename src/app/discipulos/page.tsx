@@ -22,7 +22,7 @@ export default function DiscipulosPage() {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        router.push("/auth/signin");
+        router.push("/login");
         return;
       }
 

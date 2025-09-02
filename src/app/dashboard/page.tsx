@@ -1,6 +1,6 @@
 "use client";
 
-import { BottomNav, UserCard } from "@/components/ui";
+import { BottomNav, UserCard, ThemeToggle, Avatar, AvatarFallback } from "@/components/ui";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import { Users } from "lucide-react";
@@ -86,30 +86,32 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* <nav className="bg-card border-b hidden md:flex md:jus ">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
+      {/* Header */}
+      <header className="bg-card border-b sticky top-0 z-10">
+        <div className="px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
               <h1 className="text-xl font-semibold text-foreground">
-                Assistente do Líder de Célula
+                Dashboard
               </h1>
             </div>
-            <div className="flex items-center space-x-4">
-              <Avatar>
-                <div className="w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-medium">
-                  {(user.user_metadata?.full_name || user.email || "U")
+            <div className="flex items-center gap-2">
+              <Avatar className="w-8 h-8">
+                <AvatarFallback className="bg-primary text-primary-foreground text-sm">
+                  {(
+                    currentUser?.user_metadata?.full_name ||
+                    currentUser?.email ||
+                    "U"
+                  )
                     .charAt(0)
                     .toUpperCase()}
-                </div>
+                </AvatarFallback>
               </Avatar>
-              <span className="text-muted-foreground">
-                Olá, {user.user_metadata?.full_name || user.email}
-              </span>
-              <LogoutButton />
+              <ThemeToggle />
             </div>
           </div>
         </div>
-      </nav> */}
+      </header>
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0 text-center flex flex-col gap-6">

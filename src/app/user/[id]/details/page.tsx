@@ -1,26 +1,25 @@
 "use client";
 
-import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
-import { useEffect, useState, use } from "react";
 import {
-  Button,
   Avatar,
-  AvatarImage,
   AvatarFallback,
+  AvatarImage,
   Badge,
-  Progress,
+  Button,
 } from "@/components/ui";
+import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 import {
   ArrowLeft,
-  User as UserIcon,
   Calendar,
-  Tag,
   Clock,
   Heart,
+  Tag,
+  User as UserIcon,
 } from "lucide-react";
 import Link from "next/link";
-import type { User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
+import { use, useEffect, useState } from "react";
 
 interface UserDetailsPageProps {
   params: Promise<{
@@ -245,20 +244,20 @@ export default function UserDetailsPage({ params }: UserDetailsPageProps) {
     }
   };
 
-  const getStatusPercentage = (status: RelationshipStatus) => {
-    const index = statusLevels.indexOf(status);
-    return ((index + 1) / statusLevels.length) * 100;
-  };
+  // const getStatusPercentage = (status: RelationshipStatus) => {
+  //   const index = statusLevels.indexOf(status);
+  //   return ((index + 1) / statusLevels.length) * 100;
+  // };
 
-  const getStatusFromClick = (
-    clickX: number,
-    totalWidth: number
-  ): RelationshipStatus => {
-    const percentage = (clickX / totalWidth) * 100;
-    const stepSize = 100 / statusLevels.length;
-    const stepIndex = Math.floor(percentage / stepSize);
-    return statusLevels[Math.min(stepIndex, statusLevels.length - 1)];
-  };
+  // const getStatusFromClick = (
+  //   clickX: number,
+  //   totalWidth: number
+  // ): RelationshipStatus => {
+  //   const percentage = (clickX / totalWidth) * 100;
+  //   const stepSize = 100 / statusLevels.length;
+  //   const stepIndex = Math.floor(percentage / stepSize);
+  //   return statusLevels[Math.min(stepIndex, statusLevels.length - 1)];
+  // };
 
   return (
     <div className="min-h-screen bg-background pb-20">

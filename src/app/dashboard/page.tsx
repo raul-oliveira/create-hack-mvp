@@ -1,27 +1,11 @@
 "use client";
 
+import { BottomNav, UserCard } from "@/components/ui";
 import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
+import { Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import LogoutButton from "@/components/LogoutButton";
-import {
-  Button,
-  Calendar,
-  Avatar,
-  Badge,
-  PieChart,
-  ChartContainer,
-  UserCard,
-  BottomNav,
-} from "@/components/ui";
-import {
-  Users,
-  Target,
-  AlertCircle,
-  Calendar as CalendarIcon,
-  BarChart3,
-} from "lucide-react";
-import type { User } from "@supabase/supabase-js";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -54,14 +38,6 @@ export default function DashboardPage() {
 
     getUser();
   }, [router]);
-
-  // Dados de exemplo para o gráfico
-  const chartData = [
-    { name: "Ativos", value: 45, color: "hsl(var(--chart-1))" },
-    { name: "Novos", value: 25, color: "hsl(var(--chart-2))" },
-    { name: "Inativos", value: 20, color: "hsl(var(--chart-3))" },
-    { name: "Visitantes", value: 10, color: "hsl(var(--chart-4))" },
-  ];
 
   // Define all users with their data
   const allUsers = [
@@ -179,7 +155,6 @@ export default function DashboardPage() {
         </div>
       </main>
 
-      {/* Floating Bottom Navigation */}
       <BottomNav />
     </div>
   );

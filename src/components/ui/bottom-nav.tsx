@@ -1,10 +1,9 @@
 "use client";
 
-import * as React from "react";
-import { useRouter, usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Home, User, CheckSquare, Book } from "lucide-react";
-import { lazy } from "zod/v3";
+import { CheckSquare, Home, User } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import * as React from "react";
 
 interface BottomNavProps {
   className?: string;

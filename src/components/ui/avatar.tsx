@@ -1,10 +1,11 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import Image, { ImageProps } from "next/image";
 
 interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
-  className?: string
+  className?: string;
 }
 
 const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
@@ -18,26 +19,29 @@ const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
       {...props}
     />
   )
-)
-Avatar.displayName = "Avatar"
+);
+Avatar.displayName = "Avatar";
 
-interface AvatarImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-  className?: string
+interface AvatarImageProps extends Omit<ImageProps, "width" | "height" | "fill"> {
+  className?: string;
 }
 
 const AvatarImage = React.forwardRef<HTMLImageElement, AvatarImageProps>(
-  ({ className, ...props }, ref) => (
-    <img
+  ({ className, alt = "Avatar", ...props }, ref) => (
+    <Image
       ref={ref}
+      fill
+      sizes="40px"
+      alt={alt}
       className={cn("aspect-square h-full w-full object-cover", className)}
       {...props}
     />
   )
-)
-AvatarImage.displayName = "AvatarImage"
+);
+AvatarImage.displayName = "AvatarImage";
 
 interface AvatarFallbackProps extends React.HTMLAttributes<HTMLDivElement> {
-  className?: string
+  className?: string;
 }
 
 const AvatarFallback = React.forwardRef<HTMLDivElement, AvatarFallbackProps>(
@@ -51,7 +55,7 @@ const AvatarFallback = React.forwardRef<HTMLDivElement, AvatarFallbackProps>(
       {...props}
     />
   )
-)
-AvatarFallback.displayName = "AvatarFallback"
+);
+AvatarFallback.displayName = "AvatarFallback";
 
-export { Avatar, AvatarImage, AvatarFallback }
+export { Avatar, AvatarImage, AvatarFallback };

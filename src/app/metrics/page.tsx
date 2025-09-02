@@ -1,23 +1,22 @@
 "use client";
 
+import { Avatar, AvatarFallback, BottomNav } from "@/components/ui";
 import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Avatar, AvatarFallback, BottomNav } from "@/components/ui";
 import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
 } from "recharts";
-import type { User } from "@supabase/supabase-js";
 
 export default function MetricsPage() {
   const router = useRouter();

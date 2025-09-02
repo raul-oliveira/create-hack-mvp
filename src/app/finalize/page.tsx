@@ -1,6 +1,6 @@
 "use client";
-
 import { createClient } from "@/lib/supabase/client";
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button, Textarea } from "@/components/ui";
@@ -8,7 +8,7 @@ import { ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
 
-export default function FinalizePage() {
+function FinalizeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -136,5 +136,13 @@ export default function FinalizePage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function FinalizePage() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <FinalizeContent />
+    </Suspense>
   );
 }

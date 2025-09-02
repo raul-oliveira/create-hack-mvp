@@ -1,19 +1,12 @@
 "use client";
 
+import { BottomNav, Button } from "@/components/ui";
+import { MemberCard } from "@/components/ui/memberCard";
 import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
+import { Plus, Search, User as UserIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Avatar,
-  AvatarFallback,
-  Badge,
-  UserCard,
-  BottomNav,
-} from "@/components/ui";
-import { Search, Filter, Plus, User as UserIcon } from "lucide-react";
-import type { User } from "@supabase/supabase-js";
-import { MemberCard } from "@/components/ui/memberCard";
 
 export default function DiscipulosPage() {
   const router = useRouter();

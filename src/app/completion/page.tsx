@@ -1,24 +1,17 @@
 "use client";
-
+import { Suspense } from "react";
+import { BottomNav, UserCard } from "@/components/ui";
 import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Avatar,
-  AvatarFallback,
-  UserCard,
-  BottomNav,
-} from "@/components/ui";
-import { Check } from "lucide-react";
-import type { User } from "@supabase/supabase-js";
 
-export default function CompletionPage() {
+function CompletionContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  
+
   const fromUserId = searchParams.get("from");
 
   useEffect(() => {
@@ -102,5 +95,13 @@ export default function CompletionPage() {
 
       <BottomNav />
     </div>
+  );
+}
+
+export default function CompletionPage() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <CompletionContent />
+    </Suspense>
   );
 }

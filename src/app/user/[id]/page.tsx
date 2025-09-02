@@ -1,26 +1,25 @@
 "use client";
 
-import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
-import { useEffect, useState, use } from "react";
 import {
-  Button,
   Avatar,
-  AvatarImage,
   AvatarFallback,
+  AvatarImage,
   Badge,
+  Button,
   Textarea,
 } from "@/components/ui";
+import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 import {
   ArrowLeft,
   Clock,
-  Target,
-  MessageSquare,
-  Copy,
   Lightbulb,
+  MessageSquare,
+  Target,
 } from "lucide-react";
 import Link from "next/link";
-import type { User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
+import { use, useEffect, useState } from "react";
 
 interface UserPageProps {
   params: Promise<{

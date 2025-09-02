@@ -1,12 +1,11 @@
 "use client";
 
-import * as React from "react";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Avatar, AvatarImage, AvatarFallback } from "./avatar";
-import { Badge } from "./badge";
-import { Button } from "./button";
 import { Check } from "lucide-react";
+import { useRouter } from "next/navigation";
+import * as React from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { Button } from "./button";
 
 type Rating = "pessimo" | "ruim" | "regular" | "bom" | "otimo";
 
@@ -23,10 +22,7 @@ interface UserCardProps {
 }
 
 const UserCard = React.forwardRef<HTMLDivElement, UserCardProps>(
-  (
-    { id, name, description, imageUrl, status, className, isFinalizing, rating, hasPendingInteraction },
-    ref
-  ) => {
+  ({ id, name, description, imageUrl, className, isFinalizing }, ref) => {
     const router = useRouter();
     const getInitials = (name: string) => {
       return name
@@ -37,26 +33,26 @@ const UserCard = React.forwardRef<HTMLDivElement, UserCardProps>(
         .slice(0, 2);
     };
 
-    const getStatusBadge = () => {
-      switch (status) {
-        case "active":
-          return <Badge className="text-xs">Ativo</Badge>;
-        case "inactive":
-          return (
-            <Badge variant="secondary" className="text-xs">
-              Inativo
-            </Badge>
-          );
-        case "new":
-          return (
-            <Badge variant="outline" className="text-xs">
-              Novo
-            </Badge>
-          );
-        default:
-          return null;
-      }
-    };
+    // const getStatusBadge = () => {
+    //   switch (status) {
+    //     case "active":
+    //       return <Badge className="text-xs">Ativo</Badge>;
+    //     case "inactive":
+    //       return (
+    //         <Badge variant="secondary" className="text-xs">
+    //           Inativo
+    //         </Badge>
+    //       );
+    //     case "new":
+    //       return (
+    //         <Badge variant="outline" className="text-xs">
+    //           Novo
+    //         </Badge>
+    //       );
+    //     default:
+    //       return null;
+    //   }
+    // };
 
     return (
       <div ref={ref} className={cn("space-y-4", className)}>
